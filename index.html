@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visual Resume | Jayanth Nimmalapalli</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 
+    Chosen Color Palette: 'Brilliant Blues' (#004AAD, #0062D5, #4194FF, #8AC4FF, #CDE6FF).
+    Visualization Plan: A narrative SPA visualizing a software engineer's resume.
+    1. Hook: '9+ Years' as a Single Big Number.
+    2. Technical Proficiency: Radar charts for Frontend, Backend, and Cloud skills (Chart.js/Canvas).
+    3. Career Trajectory: A vertical timeline built with structured HTML/CSS (No SVG/Mermaid).
+    4. E-commerce Impact: Donut Chart for project focus (Chart.js/Canvas) and a MACH architecture diagram (HTML/CSS).
+    5. Core Competencies: Styled cards with lists (HTML/CSS).
+    Confirmation: NO SVG graphics were used. NO Mermaid JS was used. All visuals are pure HTML/CSS or rendered on Canvas.
+    -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f7ff;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 350px;
+        }
+      }
+      .timeline-item {
+        position: relative;
+        padding-bottom: 2rem;
+        padding-left: 2.5rem;
+      }
+      .timeline-item:last-child {
+        padding-bottom: 0;
+      }
+      .timeline-dot {
+        position: absolute;
+        left: 0;
+        top: 0.25rem;
+        height: 1.25rem;
+        width: 1.25rem;
+        background-color: #4194ff;
+        border: 4px solid #cde6ff;
+        border-radius: 9999px;
+        z-index: 10;
+      }
+      .timeline-line {
+        position: absolute;
+        left: 0.5rem;
+        top: 0.25rem;
+        bottom: -0.25rem;
+        width: 2px;
+        background-color: #cde6ff;
+      }
+      .mach-arrow {
+        position: relative;
+        text-align: center;
+        padding: 1rem 0;
+      }
+      .mach-arrow::after {
+        content: "↓";
+        font-size: 2rem;
+        font-weight: bold;
+        color: #0062d5;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+      <header class="text-center mb-12">
+        <!-- Placeholder image added here -->
+        <img
+          src="https://placehold.co/150x150/004AAD/FFFFFF?text=JN"
+          alt="Profile Picture"
+          class="rounded-full mx-auto mb-6 shadow-md border-4 border-white"
+        />
+        <h1 class="text-4xl md:text-5xl font-extrabold text-[#004AAD]">
+          Jayanth Nimmalapalli
+        </h1>
+        <p class="text-xl md:text-2xl text-[#0062D5] mt-2">
+          Full Stack Software Engineer With Frontend Focus: A Visual Career
+          Journey
+        </p>
+      </header>
+
+      <section id="kpi" class="mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div
+            class="bg-white rounded-lg shadow-lg p-8 md:col-span-1 flex flex-col justify-center items-center"
+          >
+            <p class="text-8xl font-black text-[#004AAD]">9+</p>
+            <p class="text-2xl font-bold text-[#0062D5] mt-2">
+              Years of Experience
+            </p>
+            <p class="mt-4 text-gray-600">
+              Dedicated experience in the complete lifecycle of enterprise web
+              applications, from design to deployment and support.
+            </p>
+          </div>
+          <div
+            class="bg-white rounded-lg shadow-lg p-8 md:col-span-2 flex flex-col justify-center"
+          >
+            <h2 class="text-2xl font-bold text-[#004AAD] mb-4">
+              Professional Synopsis
+            </h2>
+            <p class="text-lg text-gray-700">
+              A highly accomplished engineer with advanced proficiency across a
+              robust technology stack including React JS, Node JS, and AWS.
+              Adept at architecting dynamic user interfaces and scalable RESTful
+              APIs within high-performing Agile teams. Proven history of
+              optimizing application performance, establishing CI/CD pipelines,
+              and seamlessly integrating third-party services.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="mb-16">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-[#004AAD]">
+            Technical Proficiency
+          </h2>
+          <p class="text-lg text-[#0062D5] mt-2">
+            A visual breakdown of core competencies across the technology stack.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-center mb-4 text-[#004AAD]">
+              Frontend Expertise
+            </h3>
+            <div class="chart-container">
+              <canvas id="frontendChart"></canvas>
+            </div>
+            <p class="text-center mt-4 text-gray-600">
+              Specializes in modern JavaScript frameworks to build dynamic,
+              reusable UIs.
+            </p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-center mb-4 text-[#004AAD]">
+              Backend & API Development
+            </h3>
+            <div class="chart-container">
+              <canvas id="backendChart"></canvas>
+            </div>
+            <p class="text-center mt-4 text-gray-600">
+              Expert in building scalable server-side logic and robust APIs.
+            </p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-bold text-center mb-4 text-[#004AAD]">
+              Cloud & DevOps
+            </h3>
+            <div class="chart-container">
+              <canvas id="devopsChart"></canvas>
+            </div>
+            <p class="text-center mt-4 text-gray-600">
+              Proficient in cloud infrastructure and automated deployment
+              pipelines.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="mb-16">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-[#004AAD]">Career Trajectory</h2>
+          <p class="text-lg text-[#0062D5] mt-2">
+            A timeline of professional growth and key contributions.
+          </p>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg p-8">
+          <div class="relative">
+            <div class="timeline-line"></div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <p class="text-sm font-semibold text-[#0062D5]">
+                Oct 2023 – Present
+              </p>
+              <h3 class="text-xl font-bold text-[#004AAD]">
+                Senior Software Engineer
+              </h3>
+              <p class="font-medium text-gray-700">
+                Aries Solutions (Clients: Wild Fork, JD Sports, Express)
+              </p>
+              <p class="mt-2 text-gray-600">
+                Led frontend development for e-commerce platforms using
+                Commercetools & MACH architecture. Integrated key services like
+                Yotpo, Klaviyo, and Algolia.
+              </p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <p class="text-sm font-semibold text-[#0062D5]">
+                Sep 2022 – Dec 2023
+              </p>
+              <h3 class="text-xl font-bold text-[#004AAD]">
+                Senior Software Engineer
+              </h3>
+              <p class="font-medium text-gray-700">
+                AECGEN Infotech (Clients: Wildfork Foods)
+              </p>
+              <p class="mt-2 text-gray-600">
+                Engineered reusable frontend components for Commercetools and
+                developed backend REST services with Node JS. Automated CMS
+                workflows with scripts.
+              </p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <p class="text-sm font-semibold text-[#0062D5]">
+                Oct 2021 – June 2022
+              </p>
+              <h3 class="text-xl font-bold text-[#004AAD]">
+                Software Engineer III
+              </h3>
+              <p class="font-medium text-gray-700">Evive Software Analytics</p>
+              <p class="mt-2 text-gray-600">
+                Acted as a Full Stack Engineer, enhancing a user personalization
+                engine with Node JS. Managed DynamoDB, and built event-triggered
+                architectures with AWS SQS & Lambdas.
+              </p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <p class="text-sm font-semibold text-[#0062D5]">
+                Feb 2018 – May 2021
+              </p>
+              <h3 class="text-xl font-bold text-[#004AAD]">
+                Software Engineer
+              </h3>
+              <p class="font-medium text-gray-700">
+                TechMileage/Sciata (Clients: Amex GBT, Matson)
+              </p>
+              <p class="mt-2 text-gray-600">
+                Transformed an SMS engine into a chat platform using Node JS,
+                Kafka, and Redis. Deployed containerized applications on
+                OpenShift/Kubernetes.
+              </p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <p class="text-sm font-semibold text-[#0062D5]">
+                Sep 2013 – Mar 2015
+              </p>
+              <h3 class="text-xl font-bold text-[#004AAD]">
+                Associate Software Engineer
+              </h3>
+              <p class="font-medium text-gray-700">
+                Tech Magix IT Solutions (Client: UIDAI India)
+              </p>
+              <p class="mt-2 text-gray-600">
+                Developed frontend components and applied Core Java concepts for
+                a government project. Gained foundational experience in SDLC and
+                production support.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ecommerce-impact" class="mb-16">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-[#004AAD]">
+            Impact in E-Commerce
+          </h2>
+          <p class="text-lg text-[#0062D5] mt-2">
+            Specializing in modern, highly composable commerce solutions.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+          <div class="bg-white rounded-lg shadow-lg p-6 md:col-span-2">
+            <h3 class="text-xl font-bold text-center mb-4 text-[#004AAD]">
+              Project Focus Distribution
+            </h3>
+            <div class="chart-container h-64 md:h-80">
+              <canvas id="ecommerceChart"></canvas>
+            </div>
+            <p class="text-center mt-4 text-gray-600">
+              A breakdown of efforts in recent e-commerce projects, highlighting
+              a strong focus on frontend development and crucial integrations.
+            </p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-6 md:col-span-3">
+            <h3 class="text-xl font-bold text-center mb-4 text-[#004AAD]">
+              MACH Architecture Flow
+            </h3>
+            <p class="text-center text-gray-600 mb-6">
+              Built solutions following MACH principles for flexible,
+              future-proof e-commerce platforms.
+            </p>
+            <div class="space-y-2 text-center">
+              <div
+                class="bg-[#CDE6FF] p-3 rounded-lg border-2 border-[#8AC4FF]"
+              >
+                <p class="font-bold text-[#004AAD]">M - Microservices</p>
+                <p class="text-sm text-gray-700">
+                  Individual business functions packaged as independent
+                  services.
+                </p>
+              </div>
+              <div class="mach-arrow"></div>
+              <div
+                class="bg-[#CDE6FF] p-3 rounded-lg border-2 border-[#8AC4FF]"
+              >
+                <p class="font-bold text-[#004AAD]">A - API-First</p>
+                <p class="text-sm text-gray-700">
+                  All functionality is exposed through APIs, enabling seamless
+                  communication.
+                </p>
+              </div>
+              <div class="mach-arrow"></div>
+              <div
+                class="bg-[#CDE6FF] p-3 rounded-lg border-2 border-[#8AC4FF]"
+              >
+                <p class="font-bold text-[#004AAD]">C - Cloud-Native</p>
+                <p class="text-sm text-gray-700">
+                  Leveraging cloud services (AWS) for scalability, resilience,
+                  and performance.
+                </p>
+              </div>
+              <div class="mach-arrow"></div>
+              <div
+                class="bg-[#CDE6FF] p-3 rounded-lg border-2 border-[#8AC4FF]"
+              >
+                <p class="font-bold text-[#004AAD]">H - Headless</p>
+                <p class="text-sm text-gray-700">
+                  Decoupling the frontend presentation layer (React/Next JS)
+                  from backend logic.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="text-center border-t-2 border-[#8AC4FF] pt-8 mt-12">
+        <h2 class="text-2xl font-bold text-[#004AAD]">
+          Educational Foundation
+        </h2>
+        <div
+          class="mt-4 max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <div class="bg-white p-4 rounded-lg shadow-md">
+            <p class="font-bold text-[#0062D5]">
+              Master of Science, Computer Science
+            </p>
+            <p class="text-gray-700">Rivier University, Nashua, NH</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg shadow-md">
+            <p class="font-bold text-[#0062D5]">
+              Bachelor of Electrical Engineering
+            </p>
+            <p class="text-gray-700">JNTU Affiliate Campus, India</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-500 mt-8">
+          &copy; 2024 Jayanth Nimmalapalli.
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const brilliantBlues = {
+        darkest: "#004AAD",
+        dark: "#0062D5",
+        medium: "#4194FF",
+        light: "#8AC4FF",
+        lightest: "#CDE6FF",
+      };
+
+      const globalChartOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: brilliantBlues.darkest,
+              font: {
+                family: "'Inter', sans-serif",
+                size: 14,
+              },
+            },
+          },
+          tooltip: {
+            callbacks: {
+              title: function (tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(" ");
+                }
+                return label;
+              },
+            },
+          },
+        },
+      };
+
+      const wrapLabel = (label) => {
+        const maxLength = 16;
+        if (typeof label !== "string" || label.length <= maxLength) {
+          return label;
+        }
+        const words = label.split(" ");
+        const lines = [];
+        let currentLine = "";
+        for (const word of words) {
+          if ((currentLine + " " + word).trim().length > maxLength) {
+            lines.push(currentLine.trim());
+            currentLine = word;
+          } else {
+            currentLine = (currentLine + " " + word).trim();
+          }
+        }
+        if (currentLine) {
+          lines.push(currentLine.trim());
+        }
+        return lines;
+      };
+
+      const frontendData = {
+        labels: [
+          "React JS",
+          "Next JS",
+          "Redux JS",
+          "TypeScript",
+          "UI Libraries",
+          "Testing",
+        ].map(wrapLabel),
+        datasets: [
+          {
+            label: "Proficiency",
+            data: [90, 80, 75, 85, 85, 80],
+            backgroundColor: "rgba(65, 148, 255, 0.2)",
+            borderColor: brilliantBlues.medium,
+            pointBackgroundColor: brilliantBlues.medium,
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: brilliantBlues.medium,
+          },
+        ],
+      };
+      new Chart(document.getElementById("frontendChart"), {
+        type: "radar",
+        data: frontendData,
+        options: {
+          ...globalChartOptions,
+          scales: {
+            r: {
+              angleLines: { color: brilliantBlues.lightest },
+              grid: { color: brilliantBlues.lightest },
+              pointLabels: { color: brilliantBlues.dark, font: { size: 12 } },
+              ticks: {
+                color: brilliantBlues.dark,
+                backdropColor: "transparent",
+                stepSize: 25,
+              },
+              min: 0,
+              max: 100,
+            },
+          },
+        },
+      });
+
+      const backendData = {
+        labels: [
+          "Node JS",
+          "Express JS",
+          "GraphQL",
+          "REST/SOAP",
+          "Spring Boot",
+          "Databases",
+        ].map(wrapLabel),
+        datasets: [
+          {
+            label: "Expertise",
+            data: [75, 75, 80, 70, 60, 75],
+            backgroundColor: "rgba(65, 148, 255, 0.2)",
+            borderColor: brilliantBlues.medium,
+            pointBackgroundColor: brilliantBlues.medium,
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: brilliantBlues.medium,
+          },
+        ],
+      };
+      new Chart(document.getElementById("backendChart"), {
+        type: "radar",
+        data: backendData,
+        options: {
+          ...globalChartOptions,
+          scales: {
+            r: {
+              angleLines: { color: brilliantBlues.lightest },
+              grid: { color: brilliantBlues.lightest },
+              pointLabels: { color: brilliantBlues.dark, font: { size: 12 } },
+              ticks: {
+                color: brilliantBlues.dark,
+                backdropColor: "transparent",
+                stepSize: 25,
+              },
+              min: 0,
+              max: 100,
+            },
+          },
+        },
+      });
+
+      const devopsData = {
+        labels: ["AWS", "Docker", "Kubernetes", "CI/CD", "Kafka"].map(
+          wrapLabel
+        ),
+        datasets: [
+          {
+            label: "Competence",
+            data: [60, 55, 55, 55, 60],
+            backgroundColor: "rgba(65, 148, 255, 0.2)",
+            borderColor: brilliantBlues.medium,
+            pointBackgroundColor: brilliantBlues.medium,
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: brilliantBlues.medium,
+          },
+        ],
+      };
+      new Chart(document.getElementById("devopsChart"), {
+        type: "radar",
+        data: devopsData,
+        options: {
+          ...globalChartOptions,
+          scales: {
+            r: {
+              angleLines: { color: brilliantBlues.lightest },
+              grid: { color: brilliantBlues.lightest },
+              pointLabels: { color: brilliantBlues.dark, font: { size: 12 } },
+              ticks: {
+                color: brilliantBlues.dark,
+                backdropColor: "transparent",
+                stepSize: 25,
+              },
+              min: 0,
+              max: 100,
+            },
+          },
+        },
+      });
+
+      const ecommerceData = {
+        labels: [
+          "Frontend Dev",
+          "Integrations",
+          "Backend Dev",
+          "Cloud & Ops",
+        ].map(wrapLabel),
+        datasets: [
+          {
+            label: "Project Focus",
+            data: [45, 25, 20, 10],
+            backgroundColor: [
+              brilliantBlues.dark,
+              brilliantBlues.medium,
+              brilliantBlues.light,
+              brilliantBlues.lightest,
+            ],
+            borderColor: "#fff",
+            hoverOffset: 4,
+          },
+        ],
+      };
+      new Chart(document.getElementById("ecommerceChart"), {
+        type: "doughnut",
+        data: ecommerceData,
+        options: { ...globalChartOptions },
+      });
+    </script>
+  </body>
+</html>
